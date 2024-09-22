@@ -19,11 +19,6 @@ class Network:
     def neurons_by_layer(self):
         return self._neurons_by_layer
 
-    def zero_grad(self):
-        for layer in self._neurons_by_layer:
-            for neuron in layer:
-                neuron.zero_grad()
-
     def forward(self, input_values: list[list[float]]) -> list[list[float]]:
         predictions = []
         for inputs in input_values:
@@ -47,8 +42,3 @@ class Network:
                         origin = neuron.input_parameters[j].origin
                         next_upstream_grad[origin] += delta * neuron.input_parameters[j].value
                 upstream_grad = next_upstream_grad
-
-    def step(self, lr: float):
-        for layer in self._neurons_by_layer:
-            for neuron in layer:
-                neuron.step(lr)

@@ -5,6 +5,7 @@ from src.initializers.xavier import XavierInitializer
 
 from src.loss.base_loss import BinaryCrossEntropy
 from src.network import Network
+from src.optimizers.sgd import SGD
 
 lr = 0.1
 epochs = 10
@@ -19,6 +20,7 @@ y = y.tolist()
 net = Network(2, 12, 1)
 initializer = XavierInitializer(net)
 loss_fn = BinaryCrossEntropy()
+optimizer = SGD(net, lr)
 
 # Init weights
 initializer.init()
@@ -28,7 +30,7 @@ for epoch in range(epochs):
     for i in range(0, len(X), batch_size):
         batch_X = X[i:i+batch_size]
         batch_y = y[i:i+batch_size]
-        net.zero_grad()
+        optimizer.zero_grad()
 
         batch_loss = 0
         preds = net.forward(batch_X)
@@ -36,7 +38,7 @@ for epoch in range(epochs):
         loss = loss_fn(flattened_preds, batch_y)
         batch_loss += loss
         net.backward(loss_fn.backward(flattened_preds, batch_y))
-        net.step(lr)
+        optimizer.step()
         epoch_losses.append(batch_loss / batch_size)
 
     print(f"Epoch {epoch+1}, Average Loss: {sum(epoch_losses) / len(epoch_losses):.4f}")

@@ -19,16 +19,6 @@ class Neuron:
         self.out = self.act(self.in_comb)
         return self.out
 
-    def zero_grad(self):
-        for param in self.input_parameters:
-            param.zero_grad()
-
-    def step(self, lr: float):
-        # Only steps on input parameters
-        for param in self.input_parameters:
-            # print(f"{param.name}: {param.value} -> {param.value - lr * param.grad}, grad: {param.grad}")
-            param.update(lr)
-
     def backward(self, upstream_grad):
         act_grad = self.act.backward(self.in_comb)
         delta = upstream_grad * act_grad
