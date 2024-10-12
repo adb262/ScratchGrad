@@ -29,16 +29,3 @@ class Network:
                 inputs = out_values
             predictions.append(out_values)
         return predictions
-
-    def backward(self, loss_grads: list[float]):
-        for loss in loss_grads:
-            upstream_grad = [loss]
-            for layer in self._neurons_by_layer[::-1]:
-                next_upstream_grad = [0.0] * len(layer[0].input_parameters)
-                for i, neuron in enumerate(layer):
-                    delta = neuron.backward(upstream_grad[i])
-                    for j in range(len(next_upstream_grad)):
-                        # Just multiply for now
-                        origin = neuron.input_parameters[j].origin
-                        next_upstream_grad[origin] += delta * neuron.input_parameters[j].value
-                upstream_grad = next_upstream_grad

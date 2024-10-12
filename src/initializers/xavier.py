@@ -11,6 +11,5 @@ class XavierInitializer(BaseInitializer):
                 inputs = len(neuron.input_parameters)
                 outputs = len(self.neurons_by_layer[i + 1]) if i + 1 < len(self.neurons_by_layer) else 1
                 min_val = -math.sqrt(6 / (inputs + outputs))
-                max_val = math.sqrt(6 / (inputs + outputs))
                 for param in neuron.input_parameters:
-                    param.value = random.uniform(min_val, max_val)
+                    param.value = random.uniform(min_val, -1 * min_val)

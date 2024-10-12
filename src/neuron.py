@@ -18,12 +18,3 @@ class Neuron:
                            input_value in zip(self.input_parameters, input_values)])
         self.out = self.act(self.in_comb)
         return self.out
-
-    def backward(self, upstream_grad):
-        act_grad = self.act.backward(self.in_comb)
-        delta = upstream_grad * act_grad
-
-        for param, input_value in zip(self.input_parameters, self.last_input_values):
-            param.grad += delta * input_value
-
-        return delta
